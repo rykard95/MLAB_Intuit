@@ -1,10 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}This is an example page{% endblock %}
-
-{% block navbar %}
-<div class="navbar navbar-fixed-top">
-</div>
-{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 {% block content %}
 <div class="container">
@@ -13,7 +10,31 @@
       Email
     </div>
     <div class="col-sm-6">
-      Buttons
+      <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Labels
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#moving" data-toggle="tab">Moving to a new place</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#adopted" >Adopted a pet</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#college">Family member going to college</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#tuition">Starting to pay tuition</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#intern">Getting an internship over summer</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#medical">Medical</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#wedding">Wedding</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#funeral">Funeral</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#baby">Baby</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#graduation">Graduation</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#travel">Travel</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="collapse" data-target="#collegeapp">College Applications/Scholarships</a></li>
+      </ul>
+
+      <div id="moving" class="collapse in">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </div>
+      <div id="adopted" class="collapse in">
+        hihi
+      </div>
     </div>
   </div>
 </div>
