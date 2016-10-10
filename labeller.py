@@ -24,13 +24,13 @@ def print_email(email):
 def get_label(labels):
 	"""Queries user for label"""
 	for i, elem in enumerate(labels):
-		print("[" + str(i) + "] " + elem
+		print("[" + str(i) + "] " + elem)
 	print('')
 	index = input("Pick a number: ")
-	while index < 0 or index >= len(labels):
+	while not index.isnumeric() or int(index) < 0 or int(index) >= len(labels):
 		print("That is not a valid option.")
 		index = input("Pick a number: ")
-	return labels[index]
+	return labels[int(index)]
 
 def get_features(label, features):
 	"""Queries user for features associated with a given label"""
@@ -64,8 +64,8 @@ if __name__ == "__main__":
 			   db.wedding, db.funeral, db.baby, db.grad, db.travel, db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
 	#Generate dictionaries
-	FEATURES = {LABELS(i): FEATURES_ARR(i) for i in range(len(LABELS))}
-	DBS = {LABELS(i): DBS_ARR(i) for i in range(len(LABELS))}
+	FEATURES = {LABELS[i]: FEATURES_ARR[i] for i in range(len(LABELS))}
+	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
 	#Iterate and classify emails
 	unlabeled = db.unlabeled
 	while unlabeled.count != 0:
