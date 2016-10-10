@@ -27,10 +27,11 @@ def get_label(labels):
 		print("[" + str(i) + "] " + elem)
 	print('')
 	index = input("Pick a number: ")
-	while not index.isnumeric() or int(index) < 0 or int(index) >= len(labels):
+	while index != 's' or not index.isnumeric() or int(index) < 0 or int(index) >= len(labels):
 		print("That is not a valid option.")
 		index = input("Pick a number: ")
-	return labels[int(index)]
+    if index != 's':
+	       return labels[int(index)]
 
 def get_features(label, features):
 	"""Queries user for features associated with a given label"""
@@ -72,8 +73,10 @@ if __name__ == "__main__":
 		email = get_first_email(unlabeled)
 		print_email(email)
 		label = get_label(LABELS)
-		features = get_features(label, FEATURES)
-		email.update(features)
-		DBS[label].insert_one(email)
-		email_id = get_first_email_id(unlabeled)
-		unlabeled.delete_one({'_id': email_id})
+        #Check to see if skipped
+        if label:
+            features = get_features(label, FEATURES)
+		    email.update(features)
+		    DBS[label].insert_one(email)
+		    email_id = get_first_email_id(unlabeled)
+		    unlabeled.delete_one({'_id': email_id})
