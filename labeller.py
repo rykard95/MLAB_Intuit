@@ -1,5 +1,6 @@
 #labeller.py
 from pymongo import MongoClient
+from IPython import embed
 
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
@@ -24,14 +25,17 @@ def print_email(email):
 def get_label(labels):
 	"""Queries user for label"""
 	for i, elem in enumerate(labels):
-		print("[" + str(i) + "] " + elem)
+	    print("[" + str(i) + "] " + elem)
+	print("[s] Skip")
 	print('')
 	index = input("Pick a number: ")
-	while index != 's' or not index.isnumeric() or int(index) < 0 or int(index) >= len(labels):
+	#embed()
+	while index != 's' and (not index.isnumeric() or int(index) < 0 or int(index) >= len(labels)):
 		print("That is not a valid option.")
 		index = input("Pick a number: ")
-    	if index != 's':
-		return labels[int(index)]
+	if index == 's': 
+		return -1
+	return labels[int(index)]
 
 def get_features(label, features):
 	"""Queries user for features associated with a given label"""
@@ -74,9 +78,11 @@ if __name__ == "__main__":
 		print_email(email)
 		label = get_label(LABELS)
         #Check to see if skipped
-        if label:
-        	features = get_features(label, FEATURES)
-		email.update(features)
-		DBS[label].insert_one(email)
+		if label >= 0:
+			features = get_features(label, FEATURES)
+			email.update(features)
+			DBS[label].insert_one(email)
+		else:
+			db.skipped.insert_one(email)
 		email_id = get_first_email_id(unlabeled)
 		unlabeled.delete_one({'_id': email_id})
