@@ -51,8 +51,11 @@ def get_features(label, features):
 
 if __name__ == "__main__":
 	#Instantiate connection to DB
-	client = MongoClient(MONGODB_URI)
-	db = client.emails
+	local_client = MongoClient('localhost:27017')
+	local_db = local_client.emails
+
+	remote_client = MongoClient(MONGODB_URI)
+	remote_db = client.emails
 	#Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',
 	 		  'Job/Internship Event', 'Medical Event', 'Wedding', 'Funeral',
@@ -69,14 +72,14 @@ if __name__ == "__main__":
 					['When was the graduation?', 'Where did you graduate from?'],
 					['Where did you travel to?', 'How long was the travel?', 'How much was the travel costs?', 'Was it business or personal? (1 or 0)'],
 					['Which college/scholarship was the acceptance from?', 'What is the acceptance status?']]
-	DBS_ARR = [db.moving, db.pet, db.college, db.job, db.tuition, db.medical,
-			   db.wedding, db.funeral, db.baby, db.grad, db.travel, db.application]
+	DBS_ARR = [remote_db.moving, remote_db.pet, remote_db.college, remote_db.job, remote_db.tuition, remote_db.medical,
+			   remote_db.wedding, remote_db.funeral, remote_db.baby, remote_db.grad, remote_db.travel, remote_db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
 	#Generate dictionaries
 	FEATURES = {LABELS[i]: FEATURES_ARR[i] for i in range(len(LABELS))}
 	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
 	#Iterate and classify emails
-	unlabeled = db.unlabeled
+	unlabeled = local_db.unlabeled
 	while unlabeled.count != 0:
 		email = get_first_email(unlabeled)
 		print_email(email)
@@ -87,6 +90,6 @@ if __name__ == "__main__":
 			email.update(features)
 			DBS[label].insert_one(email)
 		else:
-			db.skipped.insert_one(email)
+			local_db.skipped.insert_one(email)
 		email_id = get_first_email_id(unlabeled)
 		unlabeled.delete_one({'_id': email_id})
