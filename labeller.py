@@ -2,6 +2,10 @@
 from pymongo import MongoClient
 from IPython import embed
 
+USERNAME = 'mlabintuit'
+PASSWORD = 'mlab;123'
+MONGODB_URI = 'mongodb://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
+
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
 	email = collection.find().limit(1)[0]
@@ -47,7 +51,7 @@ def get_features(label, features):
 
 if __name__ == "__main__":
 	#Instantiate connection to DB
-	client = MongoClient('localhost:27017')
+	client = MongoClient(MONGODB_URI)
 	db = client.emails
 	#Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',
