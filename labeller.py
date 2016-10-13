@@ -6,6 +6,17 @@ USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
 MONGODB_URI = 'mongodb://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
 
+HISTORY = []
+
+def pushHistory(data):
+	HISTORY.append(data)
+	if len(HISTORY) >= 100:
+		HISTORY.pop(0)
+
+def popHistory(data):
+	return HISTORY.pop()
+
+
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
 	email = collection.find().limit(1)[0]
@@ -26,20 +37,28 @@ def print_email(email):
 	print(email['body'])
 	print("----------------------------------------------------------------------")
 
-def get_label(labels):
+def get_labels(group_labels):
 	"""Queries user for label"""
-	for i, elem in enumerate(labels):
+	for i, elem in enumerate(group_labels):
 	    print("[" + str(i) + "] " + elem)
 	print("[s] Skip")
+	print("[e] General event")
 	print('')
-	index = input("Pick a number: ")
-	#embed()
-	while index != 's' and (not index.isnumeric() or int(index) < 0 or int(index) >= len(labels)):
-		print("That is not a valid option.")
-		index = input("Pick a number: ")
-	if index == 's': 
+	index = input("Choose labels separated by spaces: ")
+
+	if 'e' in index: 
 		return -1
-	return labels[int(index)]
+	elif 's' in index:
+		return -2
+	return translate_labels(group_labels,index)
+
+def translate_labels(label_list, label_string):
+	labels = label_string.split(" ")
+	text_labels = []
+	for label in labels:
+		if label.isnumeric() and int(label) in range(len(label_list)):
+			text_labels.append(label_list[int(label)])
+	return text_labels
 
 def get_features(label, features):
 	"""Queries user for features associated with a given label"""
@@ -54,8 +73,8 @@ if __name__ == "__main__":
 	local_client = MongoClient('localhost:27017')
 	local_db = local_client.emails
 
-	remote_client = MongoClient(MONGODB_URI)
-	remote_db = client.emails
+	remote_client = MongoClient('localhost:27017') #MongoClient(MONGODB_URI)
+	remote_db = remote_client.emails
 	#Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',
 	 		  'Job/Internship Event', 'Medical Event', 'Wedding', 'Funeral',
@@ -81,15 +100,20 @@ if __name__ == "__main__":
 	#Iterate and classify emails
 	unlabeled = local_db.unlabeled
 	while unlabeled.count != 0:
-		email = get_first_email(unlabeled)
-		print_email(email)
-		label = get_label(LABELS)
+		base_email = get_first_email(unlabeled)
+		print_email(base_email)
+		labels = get_labels(LABELS)
         #Check to see if skipped
-		if label >= 0:
-			features = get_features(label, FEATURES)
-			email.update(features)
-			DBS[label].insert_one(email)
+		if isinstance(labels, list):
+			for label in labels:
+				email = base_email.copy()
+				features = get_features(label, FEATURES)
+				print('')
+				email.update(features)
+				DBS[label].insert_one(email)
+		elif labels == -1:
+			remote_db.event.insert_one(base_email)
 		else:
-			local_db.skipped.insert_one(email)
+			local_db.skipped.insert_one(base_email)
 		email_id = get_first_email_id(unlabeled)
 		unlabeled.delete_one({'_id': email_id})
