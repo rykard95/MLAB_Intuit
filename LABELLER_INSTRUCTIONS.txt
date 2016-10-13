@@ -2,7 +2,7 @@ Dependencies
 ============
 1. MongoDB
     - navigate to MongoDB's main website and download the non-enterprise version of MongoDB
-
+    - make sure local DB is running on port `27017`
 2. pymongo
     - on your machine install pymongo with
         Mac: `pip3 install pymongo`
