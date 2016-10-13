@@ -1,7 +1,7 @@
 from email import message_from_file
-from IPython import embed
+# from IPython import embed
 from eparser_utils import fileList, pullout, extract
-from insert_py.py import add_email
+from insert_py import add_email
 from datetime import datetime
 import sys
 
