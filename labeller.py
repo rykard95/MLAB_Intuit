@@ -73,7 +73,7 @@ if __name__ == "__main__":
 	local_client = MongoClient('localhost:27017')
 	local_db = local_client.emails
 
-	remote_client = MongoClient('localhost:27017') #MongoClient(MONGODB_URI)
+	remote_client = MongoClient(MONGODB_URI)
 	remote_db = remote_client.emails
 	#Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',

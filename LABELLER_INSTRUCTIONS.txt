@@ -1,0 +1,17 @@
+Dependencies
+============
+1. MongoDB
+    - navigate to MongoDB's main website and download the non-enterprise version of MongoDB
+
+2. pymongo
+    - on your machine install pymongo with
+        Mac: `pip3 install pymongo`
+        Windows: `pip install pymongo`
+
+Run Instructions
+================
+To run on the machine, open up a terminal and run the command
+    `python3 labeller.py`
+
+ 
+        
