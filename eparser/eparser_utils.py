@@ -17,16 +17,16 @@ def pullout (m):
     """Extracts content from an e-mail message.
     This works for multipart and nested multipart messages too.
     m   -- email.Message() or mailbox.Message()
-    Returns tuple(Text, Html, Files, Parts)
+    Returns tuple(Text, Html, Files, Length)
     Text  -- All text from all parts.
     Html  -- All HTMLs from all parts
     Files -- Dictionary mapping extracted file to message ID it belongs to.
-    Parts -- Number of parts in original message.
+    Length -- Chain length.
     """
     Html = ""
     Text = ""
     Files = {}
-    Parts = 0
+    Length = 0
     if not m.is_multipart():
         if m.get_filename(): # It's an attachment
             return Text, Html, Files, 1
@@ -51,14 +51,14 @@ def pullout (m):
         except: break
         # pl is a new Message object which goes back to pullout
         t, h, f, p = pullout(pl)
-        Text += t; Html += h; Files.update(f); Parts += p
+        Text += t; Html += h; Files.update(f); Length += p
         y += 1
-    return Text, Html, Files, Parts
+    return Text, Html, Files, Length
 
 def extract (msgfile):
     """Extracts all data from e-mail, including From, To, etc., and returns it as a dictionary.
     """
-    Text, Html, Files, Parts = pullout(msgfile)
+    Text, Html, Files, Length = pullout(msgfile)
     Text = Text.strip(); Html = Html.strip()
     Text = re.sub('<[^<]+?>', '', Text)
-    return Text, Html, Files, Parts
+    return Text, Html, Files, Length

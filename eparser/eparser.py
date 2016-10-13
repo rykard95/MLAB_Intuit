@@ -1,7 +1,7 @@
 from email import message_from_file
-from IPython import embed
+# from IPython import embed
 from eparser_utils import fileList, pullout, extract
-from insert_py.py import add_email
+from insert_py import add_email
 from datetime import datetime
 import sys
 
@@ -49,7 +49,7 @@ for message in messages:
     # embed()
 
     # ADD EMAIL BODY FIELDS TO KVSTORE
-    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Parts'] = extract(message)
+    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Length'] = extract(message)
 
     # ADD KVSTORE TO MONGO
     add_email(kvstore)
