@@ -49,7 +49,7 @@ for message in messages:
     # embed()
 
     # ADD EMAIL BODY FIELDS TO KVSTORE
-    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Parts'] = extract(message)
+    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Length'] = extract(message)
 
     # ADD KVSTORE TO MONGO
     add_email(kvstore)
