@@ -26,6 +26,7 @@ for eml in emls:
     messages.append(message_from_file(f))
 
 lsts = []
+everything = []
 
 # PARSE MESSAGES
 for message in messages:
@@ -41,15 +42,15 @@ for message in messages:
         if key not in kvstore:
             kvstore[key] = ''
 
-    # convert 'Date' to Data_obj
-    s = kvstore['Date'].split(" ")
-    date = s[0] + " " + s[1] + " " + s[2] + " " + s[3] + " " + s[4]
-    date_obj = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S")
-    kvstore['Date'] = date_obj
-    # embed()
-
     # ADD EMAIL BODY FIELDS TO KVSTORE
-    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Length'] = extract(message)
+    kvstore['Text'], kvstore['Html'], kvstore['Files'], kvstore['Parts'] = extract(message)
+
+    # CONVERT 'Date' TO Date_obj [CURRENTLY BROKEN]
+    # s = kvstore['Date'].split(" ")
+    # date = s[0] + " " + s[1] + " " + s[2]
+    # date_obj = datetime.strptime(date, "%a, %d %b %Y")
+    # kvstore['Date'] = date_obj
+    # embed()
 
     # ADD KVSTORE TO MONGO
     add_email(kvstore)
