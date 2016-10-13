@@ -1,0 +1,18 @@
+INSTRUCTIONS FOR DOWNLOADING, PARSING, AND UPLOADING EMAILS
+
+0) Download Python
+
+1) Pip install MongoDB ('pip install mongodb' in a shell)
+
+2) Go to 'https://github.com/jay0lee/got-your-back/wiki'
+
+3) Follow instructions to install got-your-back (GYB) on respective OS
+
+4) Set-up GYB and download emails from a gmail account to a specified path (steps 1-4 on website)
+
+5) Pull/download 'eparser' folder from our GitHub
+
+6) Run 'eparser.py' (from folder) as follows: 'python3 parser.py [path to folder with GYB emails]'
+	*Note if on Windows, replace backslashes with forward slashes in path
+	*eparser.py will parse and upload .eml files in the specified path to MongoDB
+	*example path: 'C:/Users/M/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016'
