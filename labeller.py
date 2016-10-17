@@ -102,7 +102,8 @@ if __name__ == "__main__":
 	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
 	#Iterate and classify emails
 	unlabeled = local_db.unlabeled
-	while unlabeled.count != 0:
+	embed()
+	while unlabeled.count() != 0:
 		base_email = get_first_email(unlabeled)
 		print_email(base_email)
 		labels = get_labels(LABELS)
