@@ -102,8 +102,8 @@ if __name__ == "__main__":
 	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
 	#Iterate and classify emails
 	unlabeled = local_db.unlabeled
-	embed()
 	while unlabeled.count() != 0:
+		print("There are " + str(unlabeled.count()) + " emails left")
 		base_email = get_first_email(unlabeled)
 		print_email(base_email)
 		labels = get_labels(LABELS)
@@ -121,3 +121,5 @@ if __name__ == "__main__":
 			local_db.skipped.insert_one(base_email)
 		email_id = get_first_email_id(unlabeled)
 		unlabeled.delete_one({'_id': email_id})
+
+	print("No more emails")
