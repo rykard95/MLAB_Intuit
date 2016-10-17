@@ -20,7 +20,7 @@ def popHistory(data):
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
 	email = collection.find().limit(1)[0]
-	relevant_values = ['subject', 'from', 'to', 'body']
+	relevant_values = ['Subject', 'From', 'To', 'Text']
 	return {val: email[val] for val in relevant_values}
 
 def get_first_email_id(collection):
@@ -31,10 +31,10 @@ def get_first_email_id(collection):
 def print_email(email):
 	"""Prints given email dictionary"""
 	print("----------------------------- Email ----------------------------------")
-	print(email['subject'])
-	print('FROM: ' + email['from'] + ' TO: ' + email['to'])
+	print(email['Subject'])
+	print('FROM: ' + email['From'] + ' TO: ' + email['To'])
 	print('')
-	print(email['body'])
+	print(email['Text'])
 	print("----------------------------------------------------------------------")
 
 def get_labels(group_labels):
