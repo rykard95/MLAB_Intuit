@@ -94,7 +94,7 @@ if __name__ == "__main__":
 					['When was the graduation?', 'Where did you graduate from?'],
 					['Where did you travel to?', 'How long was the travel?', 'How much was the travel costs?', 'Was it business or personal? (1 or 0)'],
 					['Which college/scholarship was the acceptance from?', 'What is the acceptance status?']]
-	DBS_ARR = [remote_db.moving, remote_db.pet, remote_db.college, remote_db.job, remote_db.tuition, remote_db.medical,
+	DBS_ARR = [remote_db.moving, remote_db.pet, remote_db.college, remote_db.tuition, remote_db.job, remote_db.medical,
 			   remote_db.wedding, remote_db.funeral, remote_db.baby, remote_db.grad, remote_db.travel, remote_db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
 	#Generate dictionaries
