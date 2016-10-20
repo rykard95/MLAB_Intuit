@@ -46,7 +46,7 @@ def get_labels(group_labels):
 	print('')
 	index = input("Choose labels separated by spaces: ")
 
-	if 'e' in index: 
+	if 'e' in index:
 		return -1
 	elif 's' in index:
 		return -2
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 	remote_db = remote_client['emails']
 	remote_db.authenticate(USERNAME, PASSWORD)
 	remote_db = remote_client.emails
-	
+
     #Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',
 	 		  'Job/Internship Event', 'Medical Event', 'Wedding', 'Funeral',

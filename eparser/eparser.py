@@ -34,7 +34,7 @@ everything = []
 # PARSE MESSAGES
 for message in messages:
     kvstore = {}
-    
+
     # ADD RELEVANT FIELDS TO KVSTORE
     for key in message.keys():
         if key in relevant_fields:
