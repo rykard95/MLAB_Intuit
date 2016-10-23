@@ -48,7 +48,7 @@ def get_labels(group_labels):
 
 	if 'e' in index: 
 		return -1
-	elif 's' in index:
+	elif 's' in index or not index:
 		return -2
 	return translate_labels(group_labels,index)
 
@@ -65,7 +65,10 @@ def get_features(label, features):
 	feature_responses = {}
 	for feature in features[label]:
 		response = input(feature + ' ')
-		feature_responses[feature] = response
+		if response:
+			feature_responses[feature] = response
+		else: 
+			feature_responses[feature] = "N/A"
 	return feature_responses
 
 if __name__ == "__main__":
