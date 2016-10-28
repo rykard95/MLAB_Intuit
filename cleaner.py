@@ -26,17 +26,17 @@ if __name__ == "__main__":
             new_record = record.copy()
             temp_text = new_record['Text']
 
-            temp_text = temp_text[2:-1]
+            temp_text = temp_text[2:-1] #removes first 2 characters and last character
 
             # reply_separator = '\\n\\nOn'
             # temp_text = temp_text.split(reply_separator, 1)[0]
 
-            temp_text = re.sub('On.*at.*wrote:.*', '', temp_text)
+            temp_text = re.sub('On.*at.*wrote:.*', '', temp_text) #removes everything in the text that is involved with a reply message
 
             # forward_separator = '*\\n\\n'
             # temp_text = temp_text.split(forward_separator, 1)[-1]
 
-            temp_text = re.sub('---------- Forwarded message ----------.*\*', '', temp_text)
+            temp_text = re.sub('---------- Forwarded message ----------.*\*', '', temp_text) #removes everything in the text that is involved with a forward message
 
             temp_text = temp_text.replace('\\n', ' ')
             temp_text = temp_text.replace('\\r', ' ')
