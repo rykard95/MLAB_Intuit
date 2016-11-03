@@ -2,6 +2,9 @@
 from pymongo import MongoClient
 from labeller import print_email
 import re
+from nltk.corpus import stopwords
+
+stopwords = stopwords.words("english")
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
@@ -41,6 +44,7 @@ if __name__ == "__main__":
             temp_text = temp_text.replace('\\n', ' ')
             temp_text = temp_text.replace('\\r', ' ')
             temp_text = temp_text.replace('>', ' ')
+            temp_text = ' '.join(word for word in temp_text.split() if word not in stopwords)
 
             new_record['Text'] = temp_text
 
