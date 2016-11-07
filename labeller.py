@@ -1,6 +1,7 @@
 #labeller.py
 from pymongo import MongoClient
 from IPython import embed
+import csv
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
@@ -46,7 +47,7 @@ def get_labels(group_labels):
 	print('')
 	index = input("Choose labels separated by spaces: ")
 
-	if 'e' in index: 
+	if 'e' in index:
 		return -1
 	elif 's' in index or not index:
 		return -2
@@ -67,7 +68,7 @@ def get_features(label, features):
 		response = input(feature + ' ')
 		if response:
 			feature_responses[feature] = response
-		else: 
+		else:
 			feature_responses[feature] = "N/A"
 	return feature_responses
 
@@ -80,7 +81,7 @@ if __name__ == "__main__":
 	remote_db = remote_client['emails']
 	remote_db.authenticate(USERNAME, PASSWORD)
 	remote_db = remote_client.emails
-	
+
     #Declare constants
 	LABELS = ['Moving Event', 'Pet Adoption', 'Attending College', 'Tuition Event',
 	 		  'Job/Internship Event', 'Medical Event', 'Wedding', 'Funeral',
@@ -100,6 +101,10 @@ if __name__ == "__main__":
 	DBS_ARR = [remote_db.moving, remote_db.pet, remote_db.college, remote_db.tuition, remote_db.job, remote_db.medical,
 			   remote_db.wedding, remote_db.funeral, remote_db.baby, remote_db.grad, remote_db.travel, remote_db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
+
+	with open('sensitive_info.csv', 'rb') as csvfile:
+		reader = csv.reader(csvfile, delimiter='|')
+
 	#Generate dictionaries
 	FEATURES = {LABELS[i]: FEATURES_ARR[i] for i in range(len(LABELS))}
 	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
@@ -117,6 +122,8 @@ if __name__ == "__main__":
 				features = get_features(label, FEATURES)
 				print('')
 				email.update(features)
+				for row in reader:
+					email['Text']  = email['Text'].replace(row, ''.join(['0' for i in range(len(row))]))
 				DBS[label].insert_one(email)
 		elif labels == -1:
 			remote_db.event.insert_one(base_email)
