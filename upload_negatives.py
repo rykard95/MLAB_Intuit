@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import numpy as np
 import re
 from IPython import embed
+from utils import *
 
 def clean(text, stopwords):
     text = text[2:-1]
@@ -9,7 +10,7 @@ def clean(text, stopwords):
     text = text.replace('\\n', ' ')
     text = text.replace('\\r', ' ')
     text = text.replace('>', ' ')
-    text = re.sub(r'\W+', ' ', text)
+    text = re.sub("[^a-zA-Z0-9\s.?!]", '', text)
     text = ' '.join(word for word in text.split() if word not in stopwords)
     return text
 
@@ -32,7 +33,7 @@ def upload_emails(list_of_emails, db):
     for email in list_of_emails:
         try:
             collection.insert_one(email)
-        except DuplicateKeyError:
+        except:
             collection.delete_one(email)
     print('Upload complete...')
     
@@ -40,14 +41,8 @@ if __name__ == "__main__":
     from nltk.corpus import stopwords
     stopwords = stopwords.words("english")
 
-    USERNAME = 'mlabintuit'
-    PASSWORD = 'mlab;123'
-    MONGODB_URI = 'mongobd://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
-    remote_client = MongoClient("ds048319.mlab.com", 48319)
-    remote_db = remote_client['emails']
-    remote_db.authenticate(USERNAME, PASSWORD)
-    remote_db = remote_client.emails
-
+    remote_db = get_remote_db()
+    
     local_client = MongoClient('localhost:27017')
     local_db = local_client.emails        
     emails = get_random_emails(100, local_db)
