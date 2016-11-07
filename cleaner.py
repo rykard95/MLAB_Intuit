@@ -24,6 +24,10 @@ if __name__ == "__main__":
 
     CLEAN_COLLECTIONS = [local_db.moving_clean, local_db.pet_clean, local_db.college_clean, local_db.tuition_clean, local_db.job_clean, local_db.medical_clean,
 			   local_db.wedding_clean, local_db.funeral_clean, local_db.baby_clean, local_db.grad_clean, local_db.travel_clean, local_db.application_clean]
+
+    for collection in CLEAN_COLLECTIONS:
+        collection.remove()
+
     for collection in OLD_COLLECTIONS:
         for record in collection.find():
             new_record = record.copy()
@@ -31,13 +35,9 @@ if __name__ == "__main__":
 
             temp_text = temp_text[2:-1] #removes first 2 characters and last character
 
-            # reply_separator = '\\n\\nOn'
-            # temp_text = temp_text.split(reply_separator, 1)[0]
 
             temp_text = re.sub('On.*at.*wrote:.*', '', temp_text) #removes everything in the text that is involved with a reply message
 
-            # forward_separator = '*\\n\\n'
-            # temp_text = temp_text.split(forward_separator, 1)[-1]
 
             temp_text = re.sub('---------- Forwarded message ----------.*\*', '', temp_text) #removes everything in the text that is involved with a forward message
 
