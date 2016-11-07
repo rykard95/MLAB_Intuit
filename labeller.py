@@ -102,8 +102,15 @@ if __name__ == "__main__":
 			   remote_db.wedding, remote_db.funeral, remote_db.baby, remote_db.grad, remote_db.travel, remote_db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
 
-	with open('sensitive_info.csv', 'rb') as csvfile:
+	sensitive_info = []
+
+	with open('sensitive_info.csv', 'r') as csvfile:
 		reader = csv.reader(csvfile, delimiter='|')
+		for row in reader:
+			for word in row:
+				sensitive_info.append(word)
+
+	print(sensitive_info)
 
 	#Generate dictionaries
 	FEATURES = {LABELS[i]: FEATURES_ARR[i] for i in range(len(LABELS))}
@@ -122,8 +129,7 @@ if __name__ == "__main__":
 				features = get_features(label, FEATURES)
 				print('')
 				email.update(features)
-				for row in reader:
-					email['Text']  = email['Text'].replace(row, ''.join(['0' for i in range(len(row))]))
+				email['Text']  = ' '.join(word for word in email['Text'].split() if word not in sensitive_info)
 				DBS[label].insert_one(email)
 		elif labels == -1:
 			remote_db.event.insert_one(base_email)
