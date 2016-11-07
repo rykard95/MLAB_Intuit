@@ -17,4 +17,8 @@ def get_remote_db():
     remote_db = remote_client['emails']
     remote_db.authenticate(USERNAME, PASSWORD)
     return remote_db
-    
+
+def get_local_db():
+    local_client = MongoClient('localhost:27017')
+    return local_client.emails
+ 
