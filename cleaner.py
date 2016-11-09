@@ -2,13 +2,24 @@
 from pymongo import MongoClient
 from labeller import print_email
 import re
-from nltk.corpus import stopwords
+import hashlib
 
-stopwords = stopwords.words("english")
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
 MONGODB_URI = 'mongodb://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
+
+stop_words = set(['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I',
+'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but',
+'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my'
+, 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if',
+'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like',
+'time', 'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year',
+'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then',
+'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back',
+'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way',
+'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us'])
+
 
 if __name__ == "__main__":
     local_client  = MongoClient('localhost:27017')
@@ -44,8 +55,12 @@ if __name__ == "__main__":
             temp_text = temp_text.replace('\\n', ' ')
             temp_text = temp_text.replace('\\r', ' ')
             temp_text = temp_text.replace('>', ' ')
-            temp_text = ' '.join(word for word in temp_text.split() if word not in stopwords)
 
-            new_record['Text'] = temp_text
+
+            tokenized_email = temp_text.split()
+            tokenized_email = [word for word in tokenized_email if word not in stop_words]
+            cleaned_email = ' '.join(tokenized_email)
+
+            new_record['Text'] = cleaned_email
 
             CLEAN_COLLECTIONS[OLD_COLLECTIONS.index(collection)].insert_one(new_record)
