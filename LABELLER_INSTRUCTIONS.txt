@@ -10,8 +10,10 @@ Dependencies
 
 Run Instructions
 ================
-To run on the machine, open up a terminal and run the command
+1. Add any sensitive information that you might have to sensitive_info.csv in a pipe delimited format.
+    Example: 1234 Durant Avenue|1234567|123-456-789
+   
+2. To run on the machine, open up a terminal and run the command
     `python3 labeller.py`
-
  
         
