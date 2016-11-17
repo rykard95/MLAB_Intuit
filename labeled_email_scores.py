@@ -6,6 +6,7 @@ from utils import *
 from operator import add
 from model import *
 from matplotlib import pyplot as plt
+from pylab import savefig
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
@@ -119,9 +120,6 @@ def get_all_to(db):
                      and name != '[]' and len(name)<24]
     return np.unique(names) 
 
-def find_index_of_correct_label(label_index, score_vector):
-    return np.where(score_vector == label_index)
-
 def generate_histograms(score_matrix):
     # Label to number mapping
     labels = get_labels()
@@ -129,6 +127,7 @@ def generate_histograms(score_matrix):
     # Initialize the Histograms
     class_rank = {i:[] for i in range(len(labels))}
     correct_rank = []
+    guess_rank = []
     each_class_correct_rank = {i:0 for i in range(len(labels))}
     correct_raw_scores = {i:[] for i in range(len(labels))}
     incorrect_raw_scores = {i:[] for i in range(len(labels))} 
@@ -143,14 +142,34 @@ def generate_histograms(score_matrix):
         
         # Add to Histogram
         correct_rank.append(correct_label)
+        guess_rank.append(top_score_ind[0])
         class_rank[correct_label].append(rank)
         if correct_label == top_score_ind[0]:
             correct_raw_scores[correct_label].append(score_vector[0])
         else:
             incorrect_raw_scores[top_score_ind[0]].append(score_vector[0])
-    #plot_correct_hist(correct_rank)
-    plot_label_rank(class_rank[0], labels[0])
-           
+    
+    plot_correct_hist(correct_rank)
+    plot_guess_hist(guess_rank)
+    for i in range(len(labels)):
+        plot_label_rank(class_rank[i], labels[i])
+        plot_correct_class_scores(correct_raw_scores[i], labels[i])
+        plot_incorrect_class_scores(incorrect_raw_scores[i], labels[i])
+    plot_correct_scores(correct_raw_scores)
+    plot_incorrect_scores(incorrect_raw_scores)
+          
+def plot_guess_hist(guess_hist):
+    bins = np.arange(13) - 0.5    
+    n, bins, patches = plt.hist(guess_hist, bins, normed=1, facecolor='green', alpha=0.75) 
+    labels = get_labels()
+    plt.title("Guess Labels Histogram")
+    plt.xlabel("Label")
+    plt.xticks(np.arange(len(labels)), labels, rotation='vertical')
+    plt.ylabel("Frequency of Labels")
+    plt.tight_layout()
+    savefig("w2v_figs/guess_hist.png")
+    plt.clf()
+
 def plot_correct_hist(correct_hist):
     bins = np.arange(13) - 0.5    
     n, bins, patches = plt.hist(correct_hist, bins, normed=1, facecolor='green', alpha=0.75) 
@@ -159,7 +178,10 @@ def plot_correct_hist(correct_hist):
     plt.xlabel("Label")
     plt.xticks(np.arange(len(labels)), labels, rotation='vertical')
     plt.ylabel("Frequency of Labels")
-    plt.show()
+    plt.tight_layout()
+    savefig("w2v_figs/correct_hist.png")
+    plt.clf()
+    #plt.show()
 
 def plot_label_rank(ranks, label):
     bins = np.arange(13) - 0.5
@@ -168,21 +190,64 @@ def plot_label_rank(ranks, label):
     plt.title("Ranks for Label: " + label)
     plt.xticks(np.arange(len(labels)), labels)
     plt.ylabel("Frequency Rank Appearance")
-    plt.show()
+    plt.tight_layout()
+    savefig("w2v_figs/rank_" + label+'.png')
+    plt.clf()
+    #plt.show()
     
+def plot_correct_scores(correct_scores):
+    scores = np.array([a for v in correct_scores.values() for a in v])
+    n, bins, patches = plt.hist(scores, 50, normed=1, facecolor='blue', alpha=0.75)
+    plt.title("Histogram of Correct Label Scores")
+    plt.ylabel("Frequency of scores")
+    plt.xlabel("Score")
+    plt.tight_layout()
+    savefig('w2v_figs/correct_scores.png')
+    #plt.show()
+    plt.clf()
+
+def plot_incorrect_scores(incorrect_scores):
+    scores = np.array([a for v in incorrect_scores.values() for a in v])
+    n, bins, patches = plt.hist(scores, 50, normed=1, facecolor='red', alpha=0.75)
+    plt.title("Histogram of Incorrect Label Scores")
+    plt.ylabel("Frequency of scores")
+    plt.tight_layout()
+    savefig('w2v_figs/Incorrect_scores.png')
+    #plt.show()
+    plt.clf()
+
+def plot_correct_class_scores(correct_scores, label):
+    scores = correct_scores
+    n, bins, patches = plt.hist(scores, 50, normed=1, facecolor='blue', alpha=0.75)
+    plt.title("Histogram of Correct Label Scores for " + label)
+    plt.ylabel("Frequency of scores")
+    plt.tight_layout()
+    savefig('w2v_figs/Correct_scores_'+ label +'.png')
+    #plt.show()
+    plt.clf()
+    
+    pass
+
+def plot_incorrect_class_scores(incorrect_scores, label):
+    scores = incorrect_scores 
+    n, bins, patches = plt.hist(scores, 50, normed=1, facecolor='red', alpha=0.75)
+    plt.title("Histogram of Incorrect Label Scores for " + label)
+    plt.ylabel("Frequency of scores")
+    plt.tight_layout()
+    savefig('w2v_figs/Incorrect_scores_'+label+'.png')
+    #plt.show()
+    plt.clf()
 
 if __name__ == "__main__":
     k = 3
     print("Importing model...")
     local_db = get_local_db();
-    model = generate_model(local_db, 'emails')
-#    model = generate_model(local_db)
+#    model = generate_model(local_db, 'emails')
+    model = generate_model(local_db)
     print("Generating scores")
     r, score_matrix = results(local_db, model, max, k=k, expand_label=True)
-    labels = get_labels()
-    labels_index = np.arange(len(labels))
 #    print("For k = " + str(k) + ", our match rate was: " + str(r))
-    names = get_all_to(local_db) 
+#    names = get_all_to(local_db) 
 #    print(names)
     generate_histograms(score_matrix)
     
