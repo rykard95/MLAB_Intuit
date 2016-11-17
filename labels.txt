@@ -1,1 +1,1 @@
-Moving Event, Pet Adoption, Attending College, Tuition Event, Job/Internship Event, Medical Event, Wedding, Funeral, Baby, Graduation, Travel Event, College/Scholarship Applications
+moving, pet, college, tuition, job, medical, wedding, funeral, baby, grad, travel, application
