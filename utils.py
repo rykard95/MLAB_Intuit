@@ -80,4 +80,7 @@ def get_all_emails(db):
                 continue
             yield email
 
+def get_all_labeled_emails(db, collection=False):
+    pass
+
     

@@ -7,6 +7,7 @@ from operator import add
 from model import *
 from matplotlib import pyplot as plt
 from pylab import savefig
+from scipy.io import savemat, loadmat
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
@@ -54,7 +55,10 @@ def generate_cross_scores(db, model, func, expand_label):
             subject_score = score(subject, label, model, func, expand_label)
             score_vector.append(body_score + subject_score)
         score_matrix.append(score_vector + [real_label])
-    return np.vstack(score_matrix)
+    score_matrix = np.vstack(score_matrix)
+    score_mat = {'score_matrix': score_matrix}
+    savemat('score_matrix', score_mat)
+    return score_matrix
 
 def get_next_label_collection(db):
     collection_names = db.collection_names()
@@ -134,7 +138,7 @@ def generate_histograms(score_matrix):
 
     # Iterate through score matrix
     for score_vector in score_matrix:
-        correct_label = label_to_number[str(score_vector[-1])] 
+        correct_label = label_to_number[str(score_vector[-1]).strip()] 
         score_vector = score_vector[:-1].astype(float)
         top_score_ind = np.argsort(score_vector)[::-1]
         score_vector = np.sort(score_vector)[::-1]
@@ -147,7 +151,8 @@ def generate_histograms(score_matrix):
         if correct_label == top_score_ind[0]:
             correct_raw_scores[correct_label].append(score_vector[0])
         else:
-            incorrect_raw_scores[top_score_ind[0]].append(score_vector[0])
+
+            incorrect_raw_scores[correct_label].append(score_vector[rank])
     
     plot_correct_hist(correct_rank)
     plot_guess_hist(guess_rank)
@@ -243,11 +248,11 @@ if __name__ == "__main__":
     print("Importing model...")
     local_db = get_local_db();
 #    model = generate_model(local_db, 'emails')
-    model = generate_model(local_db)
+#    model = generate_model(local_db)
     print("Generating scores")
-    r, score_matrix = results(local_db, model, max, k=k, expand_label=True)
+#    r, score_matrix = results(local_db, model, max, k=k, expand_label=True)
 #    print("For k = " + str(k) + ", our match rate was: " + str(r))
 #    names = get_all_to(local_db) 
-#    print(names)
+    score_matrix = loadmat('score_matrix')['score_matrix']
     generate_histograms(score_matrix)
     
