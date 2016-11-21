@@ -2,4 +2,7 @@
 *.bin
 
 *.DS_Store
+
+senitive_info.csv
+
 *.png
