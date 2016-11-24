@@ -10,7 +10,7 @@ def clean(text, stopwords=STOPWORDS):
     text = text.replace('\\r', ' ')
     text = text.replace('>', ' ')
     text = re.sub("[^a-zA-Z0-9\s.?!]", '', text)    
-    text = ' '.join(word for word in text.split() if word not in stopwords)
+    text = ' '.join(word for word in text.split() if word not in stopwords and len(word) < 25) 
     return text    
 
 def get_labels(path="labels.txt"):
@@ -80,7 +80,15 @@ def get_all_emails(db):
                 continue
             yield email
 
-def get_all_labeled_emails(db, collection=False):
-    pass
+def get_all_emails_in_collection(db, collection):
+    collection = db.get_collection(collection)
+    emails = list(collection.find())
+    for email in emails:
+        email['Text'] = clean(email['Text'])
+        if not email['Text']:
+            continue
+        yield email
 
+
+   
     

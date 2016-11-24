@@ -4,7 +4,7 @@ import re
 from IPython import embed
 from utils import *
 
-def clean_emails(list_of_emails, stopwords):
+def clean_emails(list_of_emails):
     for email in list_of_emails:
         email['Text'] = clean(email['Text']) 
     return list_of_emails
@@ -29,12 +29,11 @@ def upload_emails(list_of_emails, db):
     
 if __name__ == "__main__":
     from nltk.corpus import stopwords
-    stopwords = stopwords.words("english")
 
     remote_db = get_remote_db()
     local_db = get_local_db()        
     emails = get_random_emails(300, local_db)
-    emails = clean_emails(emails, stopwords)
+    emails = clean_emails(emails)
 
     upload_emails(emails, remote_db)
         

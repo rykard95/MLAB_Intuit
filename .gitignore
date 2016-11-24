@@ -4,5 +4,6 @@
 *.DS_Store
 
 senitive_info.csv
+generate_data_split.py
 
 *.png
