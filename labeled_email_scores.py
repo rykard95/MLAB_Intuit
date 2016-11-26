@@ -4,7 +4,6 @@ import numpy as np
 from IPython import embed
 from utils import *
 from operator import add
-from model import *
 from matplotlib import pyplot as plt
 from pylab import savefig
 from scipy.io import savemat, loadmat
@@ -248,11 +247,11 @@ if __name__ == "__main__":
     print("Importing model...")
     local_db = get_local_db();
 #    model = generate_model(local_db, 'emails')
-#    model = generate_model(local_db)
+    model = generate_model(local_db)
     print("Generating scores")
-#    r, score_matrix = results(local_db, model, max, k=k, expand_label=True)
+    r, score_matrix = results(local_db, model, max, k=k, expand_label=True)
 #    print("For k = " + str(k) + ", our match rate was: " + str(r))
 #    names = get_all_to(local_db) 
-    score_matrix = loadmat('score_matrix')['score_matrix']
-    generate_histograms(score_matrix)
+#    score_matrix = loadmat('score_matrix')['score_matrix']
+#    generate_histograms(score_matrix)
     

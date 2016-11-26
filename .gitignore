@@ -3,7 +3,10 @@
 
 *.DS_Store
 
+private/*
+
 senitive_info.csv
 generate_data_split.py
+intuit_test_data
 
 *.png

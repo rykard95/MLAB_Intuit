@@ -1,0 +1,12 @@
+moving : house, apartment, location
+pet: animal, dog, cat
+college: school, study, class
+tuition: money, payment, bill
+job: internship, full, paid
+medical: sick, injury, hospital
+wedding: marriage, bride, groom
+funeral: death, mourn, bury
+baby: new, tiny, welcome 
+grad: celebration, transition, senior
+travel: plane, destination, hotel
+application: scholarship, common, college

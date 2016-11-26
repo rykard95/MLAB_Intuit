@@ -9,15 +9,6 @@ MONGODB_URI = 'mongodb://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
 
 HISTORY = []
 
-def pushHistory(data):
-	HISTORY.append(data)
-	if len(HISTORY) >= 100:
-		HISTORY.pop(0)
-
-def popHistory(data):
-	return HISTORY.pop()
-
-
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
 	email = collection.find().limit(1)[0]
