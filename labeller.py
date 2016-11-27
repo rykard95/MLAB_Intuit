@@ -1,6 +1,6 @@
 #labeller.py
 from pymongo import MongoClient
-from IPython import embed
+# from IPython import embed
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
@@ -67,7 +67,7 @@ def get_features(label, features):
 		response = input(feature + ' ')
 		if response:
 			feature_responses[feature] = response
-		else: 
+		else:
 			feature_responses[feature] = "N/A"
 	return feature_responses
 

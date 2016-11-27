@@ -4,7 +4,7 @@ from eparser_utils import fileList, pullout, extract
 from insert_py import add_email
 from datetime import datetime
 import sys
-from IPython import embed
+# from IPython import embed
 
 # EXAMPLE PATH: C:/Users/M/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016/8
 
