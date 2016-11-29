@@ -1,21 +1,13 @@
 #labeller.py
 from pymongo import MongoClient
 # from IPython import embed
+import csv
 
 USERNAME = 'mlabintuit'
 PASSWORD = 'mlab;123'
 MONGODB_URI = 'mongodb://%s:%s@ds048319.mlab.com:48319' % (USERNAME, PASSWORD)
 
 HISTORY = []
-
-def pushHistory(data):
-	HISTORY.append(data)
-	if len(HISTORY) >= 100:
-		HISTORY.pop(0)
-
-def popHistory(data):
-	return HISTORY.pop()
-
 
 def get_first_email(collection):
 	"""Gets relevant values of first email in a collection"""
@@ -100,6 +92,17 @@ if __name__ == "__main__":
 	DBS_ARR = [remote_db.moving, remote_db.pet, remote_db.college, remote_db.tuition, remote_db.job, remote_db.medical,
 			   remote_db.wedding, remote_db.funeral, remote_db.baby, remote_db.grad, remote_db.travel, remote_db.application]
 	assert (len(FEATURES_ARR) == len(LABELS) and len(DBS_ARR) == len(LABELS)), 'Missing entry in one or more of the constant arrays.'
+
+	sensitive_info = []
+
+	with open('sensitive_info.csv', 'r') as csvfile:
+		reader = csv.reader(csvfile, delimiter='|')
+		for row in reader:
+			for word in row:
+				sensitive_info.append(word)
+
+	print(sensitive_info)
+
 	#Generate dictionaries
 	FEATURES = {LABELS[i]: FEATURES_ARR[i] for i in range(len(LABELS))}
 	DBS = {LABELS[i]: DBS_ARR[i] for i in range(len(LABELS))}
@@ -117,6 +120,7 @@ if __name__ == "__main__":
 				features = get_features(label, FEATURES)
 				print('')
 				email.update(features)
+				email['Text']  = ' '.join(word for word in email['Text'].split() if word not in sensitive_info)
 				DBS[label].insert_one(email)
 		elif labels == -1:
 			remote_db.event.insert_one(base_email)
