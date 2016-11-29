@@ -16,6 +16,7 @@ Goal: Create a model that can detect when a user is going through an important e
 
 ## Gathering Data
 * eparser.py
+
 After generating your GYB directory, invoke `eparser.py` to store your parsed emails onto your local MongoDB in the `unlabeled` email collection.
 
 Usage
@@ -33,6 +34,7 @@ email = {'From': "Email Sender",
 ```
 ## Labeling Data
 * labeller.py
+
 This is a tool that allowed for the rapid labeling of emails, to generate a labeled dataset for supervised learning.
 
 Usage
@@ -52,8 +54,8 @@ data = featurize(list_of_emails, mode='tfidf')
 Used as auxillary features as opposed to a standalone model. This model takes as input, the words which are chosen to semantically represent the labels and outputs a vector that represents the similarity scores of an email and each label.
 
 ```python
-    from word2vec_model import featurize
-    feature_vector = featurize(email)
+from word2vec_model import featurize
+feature_vector = featurize(email)
 ```
 
 ## Clustering
