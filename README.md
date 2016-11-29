@@ -2,7 +2,8 @@
 Goal: Create a model that can detect when a user is going through an important event in their life using the user's emails.
 
 ## Dependencies
-* [python2.7][1]
+* [python2.7][1] (For NLP Packages)
+* [python3][9] (For parsing raw emails)
 * [pymongo][2]
     * `pip install pymongo`
 * [gensim][3] (only if you want to import word2vec model)
@@ -12,16 +13,24 @@ Goal: Create a model that can detect when a user is going through an important e
 * [scipy][5]
     * `pip install scipy`
 * [Got Your Back (G.Y.B)][6]
+* [seaborn][7]
+    * `pip install seaborn`
+* [nltk][8]
+    * `pip install nltk`
 
 
 ## Gathering Data
 * eparser.py
-
-After generating your GYB directory, invoke `eparser.py` to store your parsed emails onto your local MongoDB in the `unlabeled` email collection.
+* 
+After [generating your GYB directory][6], invoke `eparser.py` to store your parsed emails onto your local MongoDB in the `unlabeled` email collection.
 
 Usage
 ```
-welp
+python3 parser.py [path to folder with GYB emails]
+```
+Example
+```
+python3 ~/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016
 ```
 #### Structure
 ```python
@@ -34,7 +43,7 @@ email = {'From': "Email Sender",
 ```
 ## Labeling Data
 * labeller.py
-
+* 
 This is a tool that allowed for the rapid labeling of emails, to generate a labeled dataset for supervised learning.
 
 Usage
@@ -75,6 +84,9 @@ Since importing the word2vec is a lot of overhead, a cache of the scores is incl
 [4]: http://www.numpy.org/
 [5]: https://www.scipy.org/
 [6]: https://github.com/jay0lee/got-your-back/wiki
+[7]: http://seaborn.pydata.org/
+[8]: http://www.nltk.org/
+[9]: https://www.python.org/downloads/
 
 [labeller]: https://github.com/rykard95/MLAB_Intuit/blob/master/imgs/Intuit_labeller_screenshot.png
 
