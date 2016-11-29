@@ -13,20 +13,15 @@ from pickle import load
 
 if __name__ == '__main__':
     # get training corpus/labels
-    emails = []
-    label_set = []
-    db = utils.get_local_db()
-    for collection in db.collection_names():
-        # the [:-6] is to account for the suffix '_clean'
-        label_set.append(collection[:-6])
-        for record in db.get_collection(collection).find():
-            emails.append([collection] + [record['Text']])
+    with open('intuit_data', 'rb') as f:
+        data = load(f)
+    emails = [email['Text'] for email in data['data']]
+    labels = [label for label in data['label']]
+    label_set = list(set(labels))
 
     # vectorize corpus
-    labels = [row[0][:-6] for row in emails]
-    data = [row[1] for row in emails]
     vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform(data)
+    X = vectorizer.fit_transform(emails)
     X = X.toarray()
 
     # create random forest
@@ -34,10 +29,10 @@ if __name__ == '__main__':
     forest.fit(X, labels)
 
     # read in and vectorize testing data
-    with open('intuit_data', 'rb') as f:
+    with open('intuit_test_data', 'rb') as f:
         data = load(f)
     email_vectors = [vectorizer.transform([email['Text']]) for email in data['data']]
-    email_labels = [label if label != 'negative' else 'negatives' for label in data['label']] # if-else to account for variation in naming
+    email_labels = [label for label in data['label']]
 
     # predict classification
     predicted_email_labels = [forest.predict(email_vector)[0] for email_vector in email_vectors]
