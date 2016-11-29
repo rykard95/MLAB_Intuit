@@ -4,6 +4,13 @@ import re
 from IPython import embed
 from utils import *
 
+"""
+Uploads emails which are not classified as a life event
+to the online database. This data serves as the 
+negative examples used during model training.
+"""
+
+
 def clean_emails(list_of_emails):
     for email in list_of_emails:
         email['Text'] = clean(email['Text']) 
