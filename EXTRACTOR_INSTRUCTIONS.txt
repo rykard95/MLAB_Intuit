@@ -1,0 +1,13 @@
+Files:
+1) extractor.py - defines a function (extract_all) implements the search for important fields by first identifying named entities and providing probabilities that each entity fits into each field for all local emails. Takes in as an argument whether to use random forest or hand classifications. Also defines a function (extract_one) which takes in a the text of an email, random forest classifies it, and returns guesses for each field.
+
+Steps:
+1) Set up local MongoDB (See ‘EMAIL_INSTRUCTIONS.txt’ and ‘LABELLER_INSTRUCTIONS.txt’)
+2) Run either function with the commands:
+	>>> python3 extractor.py
+	>>> extract_one(text_of_email) 
+	>>> extract_all(True)
+
+Notes:
+1) Be sure to run nltk.download() before using the script so that all the corpora it requires are present
+2) Feel free to append additional features to the provided dictionary
