@@ -1,7 +1,7 @@
 Files:
 1) random_forest.py - defines function (rf_model) that queries local database to generate training and testing sets, constructs a random forest, and predicts labels for a subset of the data. Also defines a function (rf_categorize) that does all of the above but trains on the entire dataset and takes in an email as input to categorize.
 2) random_forest_cross_validation.py - implements cross-validation and writes the generated output to the file 'random_forest_cross_validation.txt'
-3) random_forest_confusion_matrix - trains on all local data and generates a confusion matrix based on predictions for ‘intuit_data’ file which is saved to 'random_forest_confusion_matrix.png.’ C_i,j is equal to the number of observations known to be in group i but predicted to be in group j
+3) random_forest_confusion_matrix - trains on ‘intuit_data’ and generates a confusion matrix based on predictions for ‘intuit_test_data’ file which is saved to 'random_forest_confusion_matrix.png.’ C_i,j is equal to the number of observations known to be in group i but predicted to be in group j
 4) random_forest_cross_validation.txt - sample output of 2)
 5) random_forest_confusion_matrix.png - sample output of 3)
 
