@@ -75,8 +75,18 @@ def get_data():
 
     return texts, labels
 
+def featurize(data, mode='tfidf'):
+    """
+    Featurization wrapper for TF-IDF and 
+    Bag of Words. More featurization modes
+    can be added by following the structure
+    """
+    if mode == 'tfidf':
+        return tfidf(data)
+    elif mode == 'bow':
+        return bag_of_words(data)
 
-
+    
 def featurization():
     texts, labels = get_data()
     result = input('Select which featurization method you would like to use: \n [0]: Bag of words \n [1]: Tf-idf \n [2]: Modified TF \n [3]: N-gram Bag of words \n')
