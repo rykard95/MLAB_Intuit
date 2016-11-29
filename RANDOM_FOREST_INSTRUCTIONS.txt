@@ -1,0 +1,16 @@
+Files:
+1) random_forest.py - defines function (rf_model) that queries local database to generate training and testing sets, constructs a random forest, and predicts labels for a subset of the data. Also defines a function (rf_categorize) that does all of the above but trains on the entire dataset and takes in an email as input to categorize.
+2) random_forest_cross_validation.py - implements cross-validation and writes the generated output to the file 'random_forest_cross_validation.txt'
+3) random_forest_confusion_matrix - randomly partitions data and generates a confusion matrix which is saved to 'random_forest_confusion_matrix.png.’ C_i,j is equal to the number of observations known to be in group i but predicted to be in group j
+4) random_forest_cross_validation.txt - sample output of 2)
+5) random_forest_confusion_matrix.png - sample output of 3)
+
+Steps:
+1) Set up local MongoDB (See ‘EMAIL_INSTRUCTIONS.txt’ and ‘LABELLER_INSTRUCTIONS.txt’)
+2) Try categorizing an email converted to a string with the following commands:
+	>>> python3 random_forest.py
+	>>> rf_categorize(text_of_email)
+3) Create a confusion matrix or perform cross validation respectively with the commands “python3 random_forest_confusion_matrix.py” and “python3 random_forest_cross_validation.py”
+
+Notes:
+1) Hyperparameters were selected through tuning and verified through theory
