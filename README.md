@@ -22,26 +22,45 @@ Usage
 ```
 welp
 ```
-
+#### Structure
+```python
+email = {'From': "Email Sender",
+        'Subject': "Email Subject",
+        'Text': "Email Body Text",
+        'To': "Email Recipient",
+        '_id': "Datum Id"
+        }
+```
 ## Labeling Data
 * labeller.py
 This is a tool that allowed for the rapid labeling of emails, to generate a labeled dataset for supervised learning.
 
 Usage
 ```
-uhhh
+python labeller.py
 ```
-
+![alt text][labeller]
 ## Featurizing Data
 
 Example usage
+```python
+from featurizer import featurize
+data = featurize(list_of_emails, mode='tfidf')
 ```
-code block here ahh
-ahhhh
-ahhhhhhh
-```
-## Model Generation
+
 ##### Word2Vec Similarity Models
+Used as auxillary features as opposed to a standalone model. This model takes as input, the words which are chosen to semantically represent the labels and outputs a vector that represents the similarity scores of an email and each label.
+
+```python
+    from word2vec_model import featurize
+    feature_vector = featurize(email)
+```
+
+## Clustering
+Used to investigate the underlying structure of our featurization. We would like to know how many clusters exist intrinsically and see if they align well with our given labels.
+
+## Model Generation
+
 ##### Random Forests
 ##### Regression
 
@@ -53,14 +72,7 @@ Since importing the word2vec is a lot of overhead, a cache of the scores is incl
 [3]: https://radimrehurek.com/gensim/
 [4]: http://www.numpy.org/
 [5]: https://www.scipy.org/
-
-
-
-
-
-
-
-
-
 [6]: https://github.com/jay0lee/got-your-back/wiki
+
+[labeller]: https://github.com/rykard95/MLAB_Intuit/blob/master/imgs/Intuit_labeller_screenshot.png
 
