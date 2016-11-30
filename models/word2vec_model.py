@@ -93,14 +93,13 @@ def generate_model(db=None, corpus='google'):
         model = Word2Vec(sentences, size=200)    
         return model
 
-def featurize(email, labels):
-	score_vector = []
-    body = clean(datum['Text'])
-    subject = clean(datum['Subject'])
+def featurize(text, labels, model):
+    score_vector = []
     for label in labels:            
-        body_score = score(body, label, model, func, expand_label)
-        subject_score = score(subject, label, model, func, expand_label)
-        score_vector.append((body_score + subject_score)/2.0)
+        if label == 'negative':
+            continue
+        s = score(text, label, model, add, expand_label=True)
+        score_vector.append(s)
     return score_vector
 
 
