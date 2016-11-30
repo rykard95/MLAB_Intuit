@@ -1,17 +1,17 @@
-from IPython import embed
+# from IPython import embed
 from pymongo import MongoClient
 import sklearn.feature_extraction.stop_words as sw
-import re 
+import re
 
-STOPWORDS = sw.ENGLISH_STOP_WORDS 
+STOPWORDS = sw.ENGLISH_STOP_WORDS
 def clean(text, stopwords=STOPWORDS):
     text = re.sub('On.*at.*wrote:.*', '', text)
     text = text.replace('\\n', ' ')
     text = text.replace('\\r', ' ')
     text = text.replace('>', ' ')
-    text = re.sub("[^a-zA-Z0-9\s.?!]", '', text)    
-    text = ' '.join(word for word in text.split() if word not in stopwords and len(word) < 25) 
-    return text    
+    text = re.sub("[^a-zA-Z0-9\s.?!]", '', text)
+    text = ' '.join(word for word in text.split() if word not in stopwords and len(word) < 25)
+    return text
 
 def get_labels(path="labels.txt"):
     labels = []
@@ -29,7 +29,7 @@ def get_label_words(path="label_words.txt"):
             label, words = line.split(":")
             label_words[label.strip()] = [label] + [el.strip() for el in words.split(',')]
     return label_words
-            
+
 def get_remote_db():
     USERNAME = 'mlabintuit'
     PASSWORD = 'mlab;123'
@@ -88,7 +88,3 @@ def get_all_emails_in_collection(db, collection):
         if not email['Text']:
             continue
         yield email
-
-
-   
-    
