@@ -4,15 +4,15 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.feature_extraction import DictVectorizer
 
 def bag_of_words(texts):
-    vectorizor = CountVectorizer()
-    train_data_features = vectorizor.fit_transform(texts).toarray()
-    return train_data_features
+    vectorizor = CountVectorizer(texts)
+    vectorizor.fit(texts)
+    return vectorizor.transform
 
 
 def tfidf(texts):
     vectorizor = TfidfVectorizer()
-    train_data_features = vectorizor.fit_transform(texts).toarray()
-    return train_data_features
+    vectorizor.fit(texts)
+    return vectorizor.transform
 
 def term_frequency(term, tokenized_document):
     return tokenized_document.count(term)
@@ -75,7 +75,7 @@ def get_data():
 
     return texts, labels
 
-def featurize(data, mode='tfidf'):
+def generate_featurizer(data, mode='tfidf'):
     """
     Featurization wrapper for TF-IDF and
     Bag of Words. More featurization modes
