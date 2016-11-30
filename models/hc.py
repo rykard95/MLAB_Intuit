@@ -43,14 +43,15 @@ def dcg(u, v):
 # data = featurize(texts, mode='tfidf')
 # data_dist = scipy.spatial.distance.pdist(data)
 def generate_dendrogram():
+    init()
     with open('intuit_data', 'rb') as f:
         email_data = load(f)
     email_texts = [email['Text'] for email in email_data['data']]
     g = generate_featurizer(email_texts, mode='tfidf')
     print(email_texts[0])
     featurized_matrix = g(email_texts)
-    print(featurized_matrix.root)
-    data_dist = pdist(data)
+    # print(featurized_matrix[0].indices)
+    data_dist = pdist(featurized_matrix.todense())
     # 'single', 'complete', 'average'
     data_link = linkage(data_dist, method="single")
 
