@@ -4,6 +4,7 @@ from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 from nltk.corpus import wordnet as wn
 from random_forest import rf_model, rf_categorize
+from knowledge_graph import describe
 # run nltk.download() once to populate corpora
 
 emails = []
@@ -58,13 +59,22 @@ def extract_all(use_random_forest):
             field_matches = []
             for entity in entities:
                 # compute semantic distance and threshold
-                if wn.synsets(field[1]) and wn.synsets(entity[1]):
-                    a = wn.synsets(field[1])[0]
-                    b = wn.synsets(entity[1])[0]
-                    dist = a.path_similarity(b)
-                    if dist and dist > 0.05:
-                        field_matches.append([dist, entity[1]])
-            matches.append([field[1], field_matches])
+                dist = 0
+                description = describe(entity[1])
+                if description:
+                    for word in description.split():
+                        a = wn.synsets(field[1])
+                        b = wn.synsets(word)
+                        if a and b:
+                            a = a[0]
+                            b = b[0]
+                            segment = a.path_similarity(b)
+                            if segment:
+                                dist += segment
+                if dist > 0.1:
+                    field_matches.append([dist, entity[1]])
+            field_matches.sort(key=lambda x: x[0], reverse=True)
+            matches.append({field[1]: field_matches})
         email_data.append([email_set[0], email, matches])
     return email_data
 
@@ -95,13 +105,22 @@ def extract_one(email):
             field_matches = []
             for entity in entities:
                 # compute semantic distance and threshold
-                if wn.synsets(field[1]) and wn.synsets(entity[1]):
-                    a = wn.synsets(field[1])[0]
-                    b = wn.synsets(entity[1])[0]
-                    dist = a.path_similarity(b)
-                    if dist and dist > 0.05:
-                        field_matches.append([dist, entity[1]])
-            matches.append([field[1], field_matches])
+                dist = 0
+                description = describe(entity[1])
+                if description:
+                    for word in description.split():
+                        a = wn.synsets(field[1])
+                        b = wn.synsets(word)
+                        if a and b:
+                            a = a[0]
+                            b = b[0]
+                            segment = a.path_similarity(b)
+                            if segment:
+                                dist += segment
+                if dist > 0.1:
+                    field_matches.append([dist, entity[1]])
+            field_matches.sort(key=lambda x: x[0], reverse=True)
+            matches.append({field[1]: field_matches})
 
         # return categorized email with field guess probablities
         return [category, email, matches]
