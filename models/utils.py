@@ -6,6 +6,7 @@ import re
 STOPWORDS = sw.ENGLISH_STOP_WORDS 
 def clean(text, stopwords=STOPWORDS):
     text = re.sub('On.*at.*wrote:.*', '', text)
+    text = re.sub('---------- Forwarded message ----------.*\*', '', text)
     text = text.replace('\\n', ' ')
     text = text.replace('\\r', ' ')
     text = text.replace('>', ' ')
