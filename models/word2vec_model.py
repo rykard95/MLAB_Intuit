@@ -21,7 +21,7 @@ def score(text, label, model, func, expand_label):
     for word in text:
         for l in label:
             try:
-                score = func(model.similarity(word, l), score)
+                score = func(model.similarity(word, l)/len(label), score) 
             except (KeyError, AttributeError) as e:
                 continue
     return score / scale

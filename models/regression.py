@@ -114,8 +114,8 @@ def run_test(mode='tfidf', model='linear', regularizer='ridge',\
     plt.xlabel("Predicted Label", fontsize=14, fontweight='bold')
     if model != 'linear':
        regularizer = 'No'
-    plt.title("Confusion Matrix for " + model.upper() + " model with "\
-                     + regularizer.upper() +" regularization on " + modes[mode] +\
+    plt.title( model.upper() + " model -  " + regularizer.upper()\
+                     +" regularization - " + modes[mode] +\
                     " featurization - " + accuracy,\
                       fontweight='bold', fontsize=16)
     ttl = ax.title

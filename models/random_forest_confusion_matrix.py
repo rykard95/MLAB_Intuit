@@ -7,13 +7,13 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import linear_model
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from math import sqrt
 from pickle import load
 
 if __name__ == '__main__':
     # get training corpus/labels
-    with open('intuit_data', 'rb') as f:
+    with open('data/intuit_data', 'rb') as f:
         data = load(f)
     emails = [email['Text'] for email in data['data']]
     labels = [label for label in data['label']]
@@ -25,11 +25,11 @@ if __name__ == '__main__':
     X = X.toarray()
 
     # create random forest
-    forest = RandomForestClassifier(n_estimators = int(sqrt(len(X[0])))+1)
+    forest = RandomForestClassifier(n_estimators = int(sqrt(len(X[0])))+1, n_jobs=4)
     forest.fit(X, labels)
 
     # read in and vectorize testing data
-    with open('intuit_test_data', 'rb') as f:
+    with open('data/intuit_test_data', 'rb') as f:
         data = load(f)
     email_vectors = [vectorizer.transform([email['Text']]) for email in data['data']]
     email_labels = [label for label in data['label']]
@@ -43,3 +43,8 @@ if __name__ == '__main__':
     plt.figure(figsize = (10,7))
     sn.heatmap(df_cm, annot=True)
     plt.savefig('random_forest_confusion_matrix.png', format='png')
+    print("------------------------------------------------------------")
+    accuracy = accuracy_score(predicted_email_labels, email_labels)
+    print(classification_report(predicted_email_labels, email_labels))
+    print("accuracy: " + str(accuracy))
+    print("------------------------------------------------------------")
