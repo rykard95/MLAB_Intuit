@@ -68,12 +68,16 @@ def get_data():
     #   `label[i]` corresponds to `data[i]`
     emails = data['data']
     labels = data['label']
+    
+    texts = convert_data_to_texts(emails)
 
+    return texts, labels
+
+def convert_data_to_texts(emails):
     texts = []
     for email in emails:
         texts.append(email['Text'])
-
-    return texts, labels
+    return texts
 
 def generate_featurizer(data, mode='tfidf'):
     """
@@ -81,10 +85,11 @@ def generate_featurizer(data, mode='tfidf'):
     Bag of Words. More featurization modes
     can be added by following the structure
     """
+    texts = convert_data_to_texts(data)
     if mode == 'tfidf':
-        return tfidf(data)
+        return tfidf(texts)
     elif mode == 'bow':
-        return bag_of_words(data)
+        return bag_of_words(texts)
 
     
 def featurization():
