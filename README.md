@@ -23,7 +23,7 @@ The files of interest in terms of models are: `random_forest_confusion_matrix.py
 
 The following command will generate a ridge classifier with TF-IDF for text featurization.
 ```
-python linear_model.py
+python models/linear_model.py
 ```
 
 ## Gathering Data
@@ -33,11 +33,11 @@ After [generating your GYB directory][6], invoke `eparser.py` to store your pars
 
 Usage
 ```
-python3 parser.py [path to folder with GYB emails]
+python3 eparser/parser.py [path to folder with GYB emails]
 ```
 Example
 ```
-python3 parser.py ~/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016
+python3 eparser/parser.py ~/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016
 ```
 #### Structure
 ```python
@@ -95,7 +95,7 @@ Currently we are using PCA and looking at the clusters of the top 2 principle co
 
 Usage
 ```
-python pca_plot.py
+python models/pca_plot.py
 ```
 ## Model Generation
 
@@ -104,12 +104,12 @@ Random forest are an effective model to prevent overfitting to the training data
 
 To generate our scored random forest and confusion matrix evaluation, run:
 ```
-python random_forest_confusion_matrix.py
+python models/random_forest_confusion_matrix.py
 ```
 ##### Linear Classification
 We attempted to use a few linear models to do the email classification. The models we used were `linear ridge classification` and `support vector classification`. We can run these models with specific featurization,  such as `bag of words` and `tfidf`.
 ```
-python linear_model.py -m [svm/linear] -f [tfidf/bow]
+python models/linear_model.py -m [svm/linear] -f [tfidf/bow]
 ```
 
 [1]: https://www.python.org/downloads/release/python-2712/
