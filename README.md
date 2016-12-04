@@ -75,7 +75,7 @@ python labeller.py
 Example usage
 ```python
 from featurizer import featurize
-data = featurize(list_of_emails, mode='tfidf')
+data = featurize(list_of_texts, mode='tfidf')
 ```
 
 ##### Word2Vec Similarity Models
