@@ -47,4 +47,5 @@ if __name__ == '__main__':
     accuracy = accuracy_score(predicted_email_labels, email_labels)
     print(classification_report(predicted_email_labels, email_labels))
     print("accuracy: " + str(accuracy))
+    plt.show()
     print("------------------------------------------------------------")

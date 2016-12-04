@@ -18,10 +18,17 @@ Goal: Create a model that can detect when a user is going through an important e
 * [nltk][8]
     * `pip install nltk`
 
+## Quick Start
+The files of interest in terms of models are: `random_forest_confusion_matrix.py`, `linear_model.py`, and `pca_plot.py`. The featurization is done under the hood and is passed in as options to `linear_model.py`.
+
+The following command will generate a ridge classifier with TF-IDF for text featurization.
+```
+python linear_model.py
+```
 
 ## Gathering Data
 * eparser.py
-* 
+
 After [generating your GYB directory][6], invoke `eparser.py` to store your parsed emails onto your local MongoDB in the `unlabeled` email collection.
 
 Usage
@@ -30,7 +37,7 @@ python3 parser.py [path to folder with GYB emails]
 ```
 Example
 ```
-python3 ~/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016
+python3 parser.py ~/Documents/Berkeley/ML/Intuit/got-your-back-1.0/GYB-GMail-Backup-matthewtrepte@gmail.com/2016
 ```
 #### Structure
 ```python
@@ -41,9 +48,21 @@ email = {'From': "Email Sender",
         '_id': "Datum Id"
         }
 ```
+
+## Data
+We split our data into 20% testing and 80% training. The data files are python pickle files pickeled with `Python 2.7`, so to ensure that the data is loaded properly, run the model with `Python 2.7`. When loaded the data will be in the for of a list of python dictioraries. 
+
+Training Data: `models/data/intuit_data`
+Testing Data: `models/data/intuit_test_data`
+```python
+from pickle import load
+with open('models/data/intuit_data', 'rb') as f:
+    data = load(f)
+```
+
 ## Labeling Data
 * labeller.py
-* 
+
 This is a tool that allowed for the rapid labeling of emails, to generate a labeled dataset for supervised learning.
 
 Usage
@@ -68,15 +87,30 @@ feature_vector = featurize(email)
 ```
 
 ## Clustering
+* pca_plot.py
+
 Used to investigate the underlying structure of our featurization. We would like to know how many clusters exist intrinsically and see if they align well with our given labels.
 
+Currently we are using PCA and looking at the clusters of the top 2 principle components. The featurization that this model decomposition uses is TF-IDF.
+
+Usage
+```
+python pca_plot.py
+```
 ## Model Generation
 
 ##### Random Forests
-##### Regression
+Random forest are an effective model to prevent overfitting to the training data by diversifying the models in the ensemble. We use then to try and predict life events given data.
 
-### Data Cache
-Since importing the word2vec is a lot of overhead, a cache of the scores is included in the repo, named `score_matrix.mat`, for convenience.  
+To generate our scored random forest and confusion matrix evaluation, run:
+```
+python random_forest_confusion_matrix.py
+```
+##### Linear Classification
+We attempted to use a few linear models to do the email classification. The models we used were `linear ridge classification` and `support vector classification`. We can run these models with specific featurization,  such as `bag of words` and `tfidf`.
+```
+python linear_model.py -m [svm/linear] -f [tfidf/bow]
+```
 
 [1]: https://www.python.org/downloads/release/python-2712/
 [2]: https://api.mongodb.com/python/current/
@@ -88,5 +122,5 @@ Since importing the word2vec is a lot of overhead, a cache of the scores is incl
 [8]: http://www.nltk.org/
 [9]: https://www.python.org/downloads/
 
-[labeller]: https://github.com/rykard95/MLAB_Intuit/blob/master/imgs/Intuit_labeller_screenshot.png
+[labeller]: https://github.com/rykard95/MLAB_Intuit/blob/master/images/Intuit_labeller_screenshot.png
 

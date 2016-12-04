@@ -1,7 +1,13 @@
 from IPython import embed
 from pymongo import MongoClient
 import sklearn.feature_extraction.stop_words as sw
+from sklearn.metrics import confusion_matrix
+import pandas as pd
+import seaborn as sn
+from matplotlib import pyplot as plt
 import re 
+from pickle import load, dump
+import numpy as np
 
 STOPWORDS = sw.ENGLISH_STOP_WORDS 
 def clean(text, stopwords=STOPWORDS):
@@ -15,7 +21,7 @@ def clean(text, stopwords=STOPWORDS):
     text = ' '.join(word for word in text.split() if word not in stopwords and len(word) < 25) 
     return text    
 
-def get_labels(path="labels.txt"):
+def get_labels(path="config/labels.txt"):
     labels = []
     with open(path, 'r') as f:
         line = f.readline()
@@ -24,7 +30,7 @@ def get_labels(path="labels.txt"):
         labels.append(el.strip())
     return labels
 
-def get_label_words(path="label_words.txt"):
+def get_label_words(path="config/label_words.txt"):
     label_words = {}
     with open(path, 'r') as f:
         for line in f.readlines():
@@ -91,6 +97,37 @@ def get_all_emails_in_collection(db, collection):
             continue
         yield email
 
+def import_data(path):
+    with open(path, 'rb') as f:
+        email_data = load(f)
+    
+    email_texts = [email['Text'] for email in email_data['data']]
+    return email_texts, email_data['label']
 
+def label_replace(path, target, val):
+    with open(path, 'rb') as f:
+        data = load(f)
+
+    labels = np.array(data['label'])
+    labels[np.where(labels == target)] = val
+    data['label'] = labels
+    
+    with open(path, 'wb') as f:
+        dump(data, f, protocol=2)
+
+def generate_confusion_matrix(y_test, y_pred, labels, title, filename, show=False):
+    cm = confusion_matrix(y_test, y_pred, labels=labels)
+    df_cm = pd.DataFrame(cm, index=labels, columns=labels)
+    plt.figure(figsize=(12,8))
+    ax = sn.heatmap(df_cm, annot=True)
+    plt.ylabel("Actual Label", fontsize=14, fontweight='bold')
+    plt.xlabel("Predicted Label", fontsize=14, fontweight='bold')
+    plt.title(title, fontsize=16, fontweight='bold')
+    
+    ttl = ax.title
+    ttl.set_position([0.5, 1.03])
+    plt.savefig(filename)
    
+    if show:
+        plt.show()
     

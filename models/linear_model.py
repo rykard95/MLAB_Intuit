@@ -18,15 +18,7 @@ from matplotlib import pyplot as plt
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
 from word2vec_model import featurize
-
-from IPython import embed
-
-def import_data(path='intuit_data'):
-    with open(path, 'rb') as f:
-        email_data = load(f)
-    
-    email_texts = [email['Text'] for email in email_data['data']]
-    return email_texts, email_data['label']
+from utils import import_data, generate_confusion_matrix
 
 def generate_model(X, y, model='linear', regularizer='ridge'):
     if model == 'linear':
@@ -103,25 +95,12 @@ def run_test(mode='tfidf', model='linear', regularizer='ridge',\
         
     y_pred = clf.predict(X_test)
     labels = np.unique(y_test)
-    print(classification_report(y_pred, y_test))
-    accuracy = str(np.around(accuracy_score(y_pred, y_test), decimals=3))
+    print(classification_report(y_test, y_pred))
+    accuracy = str(np.around(accuracy_score(y_test, y_pred), decimals=3))
     print("accuracy: " + accuracy)
-    cm = confusion_matrix(y_pred, y_test, labels=eff_labels)
-    df_cm = pd.DataFrame(cm, index=eff_labels, columns=eff_labels)
-    plt.figure(figsize=(12,8))
-    ax = sn.heatmap(df_cm, annot=True)
-    plt.ylabel("Actual Label", fontsize=14, fontweight='bold')
-    plt.xlabel("Predicted Label", fontsize=14, fontweight='bold')
     if model != 'linear':
        regularizer = 'No'
-    plt.title( model.upper() + " model -  " + regularizer.upper()\
-                     +" regularization - " + modes[mode] +\
-                    " featurization - " + accuracy,\
-                      fontweight='bold', fontsize=16)
-    ttl = ax.title
-    ttl.set_position([.5, 1.03])
-#    plt.show()
-    plt.savefig(model+'-'+mode+'-'+regularizer.lower()+'.png', format='png')
+    generate_confusion_matrix(y_test, y_pred, eff_labels, model.upper() + " model -  " + regularizer.upper() +" regularization - " + modes[mode] + " featurization - " + accuracy, model+'-'+mode+'-'+regularizer.lower()+'.png', True)
     print("-------------------------------------------------------------------------")
 
     

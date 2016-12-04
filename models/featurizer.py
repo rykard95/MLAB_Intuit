@@ -79,13 +79,12 @@ def convert_data_to_texts(emails):
         texts.append(email['Text'])
     return texts
 
-def generate_featurizer(data, mode='tfidf'):
+def generate_featurizer(texts, mode='tfidf'):
     """
     Featurization wrapper for TF-IDF and 
     Bag of Words. More featurization modes
     can be added by following the structure
     """
-    texts = convert_data_to_texts(data)
     if mode == 'tfidf':
         return tfidf(texts)
     elif mode == 'bow':

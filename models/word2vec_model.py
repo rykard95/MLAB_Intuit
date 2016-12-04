@@ -96,7 +96,7 @@ def generate_model(db=None, corpus='google'):
 def featurize(text, labels, model):
     score_vector = []
     for label in labels:            
-        if label == 'negative':
+        if label == 'no event':
             continue
         s = score(text, label, model, add, expand_label=True)
         score_vector.append(s)

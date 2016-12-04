@@ -68,9 +68,10 @@ if __name__ == "__main__":
 	local_client = MongoClient('localhost:27017')
 	local_db = local_client.emails
 
-	remote_client = MongoClient("ds048319.mlab.com", 48319)
-	remote_db = remote_client['emails']
-	remote_db.authenticate(USERNAME, PASSWORD)
+	remote_client = MongoClient('localhost:27017')
+#    MongoClient("ds048319.mlab.com", 48319)
+#	remote_db = remote_client['emails']
+#	remote_db.authenticate(USERNAME, PASSWORD)
 	remote_db = remote_client.emails
 
     #Declare constants
