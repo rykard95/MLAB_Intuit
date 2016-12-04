@@ -87,6 +87,8 @@ feature_vector = featurize(email)
 ```
 
 ## Clustering
+
+##### Principle Component Analysis
 * pca_plot.py
 
 Used to investigate the underlying structure of our featurization. We would like to know how many clusters exist intrinsically and see if they align well with our given labels.
@@ -97,7 +99,7 @@ Usage
 ```
 python models/pca_plot.py
 ```
-
+##### K-Means
 * kmeans.py
 
 Used to segment data into 2 clusters, event and non-event. Computes accuracy of TF-IDF and BOW featurizations.
