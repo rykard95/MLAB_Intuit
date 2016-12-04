@@ -100,7 +100,7 @@ python models/pca_plot.py
 
 * kmeans.py
 
-Used to segment dimension-reduced data into 2 clusters, event and non-event.
+Used to segment data into 2 clusters, event and non-event. Computes accuracy of TF-IDF and BOW featurizations.
 
 ```
 python models/kmeans.py
@@ -108,7 +108,7 @@ python models/kmeans.py
 
 * kmeans_pca.py
 
-Used to segment dimension-reduced data into 2 clusters, event and non-event. PCA version allows clusters to be plotted.
+Used to segment dimension-reduced data into 2 clusters, event and non-event. PCA version allows clusters to be plotted. Note: to display further plots with different featurizations, X out of the previous plot window.
 
 ```
 python models/kmeans_pca.py
