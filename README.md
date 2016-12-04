@@ -91,12 +91,29 @@ feature_vector = featurize(email)
 
 Used to investigate the underlying structure of our featurization. We would like to know how many clusters exist intrinsically and see if they align well with our given labels.
 
-Currently we are using PCA and looking at the clusters of the top 2 principle components. The featurization that this model decomposition uses is TF-IDF.
+Currently we are using PCA and looking at the clusters of the top 2 principle components. The featurization that this model decomposition uses is TF-IDF and BOW.
 
 Usage
 ```
 python models/pca_plot.py
 ```
+
+* kmeans.py
+
+Used to segment dimension-reduced data into 2 clusters, event and non-event.
+
+```
+python models/kmeans.py
+```
+
+* kmeans_pca.py
+
+Used to segment dimension-reduced data into 2 clusters, event and non-event. PCA version allows clusters to be plotted.
+
+```
+python models/kmeans_pca.py
+```
+
 ## Model Generation
 
 ##### Random Forests
