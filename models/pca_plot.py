@@ -1,4 +1,4 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import PCA
 
 import matplotlib.pyplot as plt
@@ -24,9 +24,13 @@ if __name__ == '__main__':
                 emails_array.append(record['Text'])
                 label_array.append(labels.index(collection))
 
-    # PLUG-IN FEATURIZAION HERE
-    # apply tf-idf to data
-    vectorizer = TfidfVectorizer()
+# BagOfWords, TermFrequency-InverseDocumentFrequency
+vectorizers = [CountVectorizer(), TfidfVectorizer()]
+locs = [2, 4]
+
+for j in range(len(vectorizers)):
+    vectorizer = vectorizers[j]    
+    # featurize emails
     X = vectorizer.fit_transform(emails_array)
     X = X.toarray()
  
@@ -41,6 +45,6 @@ if __name__ == '__main__':
 
     # legend
     patches = [mpatches.Patch(color=colors[i], label=labels[i]) for i in range(len(labels))]
-    plt.legend(handles=patches, loc=4, fontsize=10)
+    plt.legend(handles=patches, loc=locs[j], fontsize=10)
 
     plt.show()

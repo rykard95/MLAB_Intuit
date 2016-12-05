@@ -21,11 +21,11 @@ for collection in db.collection_names():
             label_array.append(label_index)
 
 # BagOfWords, TermFrequency-InverseDocumentFrequency
-vectorizors = [CountVectorizer(), TfidfVectorizer()]
+vectorizers = [CountVectorizer(), TfidfVectorizer()]
 
-for vectorizor in vectorizors:    
+for vectorizer in vectorizers:    
     # featurize emails
-    data = vectorizor.fit_transform(emails_array).toarray()
+    data = vectorizer.fit_transform(emails_array).toarray()
 
     # apply PCA to vectors
     data = PCA(n_components=2).fit_transform(data)
